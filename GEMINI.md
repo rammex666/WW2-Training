@@ -1,6 +1,6 @@
 # WWII Tactical Training - Version Web (Statique)
 
-Ce projet est une version web (React/TypeScript) du simulateur d'entraînement tactique Java original, optimisée pour un hébergement 100% statique sur **GitHub Pages**.
+Ce projet est une version web (React/TypeScript) du simulateur d'entraînement tactique Java original, optimisée pour un hébergement 100% statique.
 
 ## Architecture
 
@@ -10,33 +10,31 @@ Ce projet est une version web (React/TypeScript) du simulateur d'entraînement t
 - **Style**: Vanilla CSS (thème militaire)
 - **Icônes**: Lucide React
 
-### Structure des dossiers
+### Structure des dossiers (Racine)
 
-- `web-app/src/`: Code source de l'application.
-- `web-app/public/data/missions.json`: Toutes les missions sont stockées ici. Vous pouvez modifier ce fichier pour ajouter de nouvelles missions sans toucher au code.
-- `web-app/public/maps/`: Images des cartes.
+- `src/`: Code source de l'application React.
+- `public/data/missions.json`: Toutes les missions stockées ici.
+- `public/maps/`: Images des cartes.
+- `java-app/`: (Ancien projet Java) Sauvegarde des sources Java d'origine.
 
 ## Pourquoi utiliser un fichier JSON ?
 
 L'utilisation d'un fichier JSON permet de :
 1.  **Garder tout sur GitHub** : Pas besoin de serveur externe ou de base de données payante.
 2.  **Facilité de modification** : Vous pouvez éditer les missions directement via l'interface de GitHub en modifiant le fichier JSON.
-3.  **Hébergement Gratuit** : Fonctionne parfaitement avec GitHub Pages.
+3.  **Hébergement Gratuit** : Fonctionne parfaitement avec Vercel et GitHub Pages.
 
 ---
 
 ## Comment héberger (Vercel - Recommandé)
 
-Vercel est la solution la plus simple car elle automatise tout :
-
 1.  Poussez votre code sur GitHub.
 2.  Sur [Vercel](https://vercel.com), importez votre dépôt.
-3.  Dans les paramètres, définissez le **Root Directory** sur **`web-app`**.
-4.  Vercel s'occupe du reste (Build & Deploy).
+3.  Vercel va automatiquement détecter le projet **Vite** à la racine et le déployer.
 
 ## Comment héberger (GitHub Pages)
 
-Si vous préférez GitHub Pages, vous devez utiliser une **GitHub Action** ou lancer ces commandes localement depuis le dossier `web-app` :
+Vous pouvez lancer ces commandes localement :
 
 ```bash
 npm install
