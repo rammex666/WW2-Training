@@ -1,0 +1,126 @@
+import { Mission, MapZone, TroopUnit, EvaluationCriteria } from '../models/types';
+
+export const MissionFactory = {
+  createAllMissions: (): Mission[] => {
+    return [
+      MissionFactory.createNormandieBeach(),
+      MissionFactory.createArdennesForest(),
+      MissionFactory.createStalingradUrban(),
+    ];
+  },
+
+  createNormandieBeach: (): Mission => ({
+    id: "normandie_beach",
+    title: "Opération Overlord - Secteur Omaha",
+    description: "Sécuriser la plage d'Omaha et établir une tête de pont",
+    difficulty: "DIFFICILE",
+    mapName: "berlin", // Using available berlin.png as fallback or if appropriate
+    objective: "Prendre le contrôle des 3 sorties de plage et neutraliser les bunkers ennemis",
+    briefing: "Sous-officier ! L'ennemi tient solidement les falaises. Vos hommes doivent progresser sous le feu. Utilisez la fumée, les véhicules amphibies et le couvert naturel pour atteindre les sorties. La marée monte — vous avez peu de temps.",
+    timeLimit: 350,
+    terrain: "NORMANDIE",
+    availableTroops: [
+      { id: "inf_1", name: "Escouade Infanterie A", type: "INFANTRY", icon: "⚔", strength: 70, count: 3, description: "Infanterie de base" },
+      { id: "inf_2", name: "Escouade Infanterie B", type: "INFANTRY", icon: "⚔", strength: 70, count: 3, description: "Infanterie de base" },
+      { id: "medic_1", name: "Médecin de combat", type: "MEDIC", icon: "✚", strength: 20, count: 2, description: "Soigne les blessés" },
+      { id: "eng_1", name: "Section Génie", type: "ENGINEER", icon: "⚙", strength: 50, count: 2, description: "Démineur essentiel" },
+      { id: "snip_1", name: "Tireur d'élite", type: "SNIPER", icon: "🎯", strength: 90, count: 1, description: "Haute précision" },
+      { id: "art_1", name: "Section Mortier", type: "ARTILLERY", icon: "💥", strength: 100, count: 1, description: "Appui feu indirect" },
+    ],
+    criteria: [
+      { name: "Assaut Sortie Gauche", description: "Infanterie sur la sortie gauche", maxPoints: 70, type: "POSITION", zoneId: "sortie_gauche", requiredTroopType: "INFANTRY" },
+      { name: "Assaut Sortie Centre", description: "Infanterie sur la sortie centre", maxPoints: 70, type: "POSITION", zoneId: "sortie_centre", requiredTroopType: "INFANTRY" },
+      { name: "Appui Sniper", description: "Sniper en position élevée", maxPoints: 50, type: "POSITION", zoneId: "colline_flanc", requiredTroopType: "SNIPER" },
+      { name: "Soutien Médical", description: "Le médecin doit être proche de l'infanterie", maxPoints: 60, type: "COHESION", requiredTroopType: "MEDIC", secondTroopType: "INFANTRY", minDistance: 0.15 },
+      { name: "Éviter Tir Croisé", description: "Ne pas rester immobile au centre de la plage", maxPoints: 50, type: "AVOIDANCE", zoneId: "plage_centre" },
+      { name: "Force Combinée", description: "Avoir au moins 2 types d'unités à la sortie centre", maxPoints: 50, type: "DIVERSITY", zoneId: "sortie_centre", requiredCount: 2 },
+    ]
+  }),
+
+  createArdennesForest: (): Mission => ({
+    id: "ardennes_foret",
+    title: "Bataille des Ardennes - Tenue défensive",
+    description: "Défendre le carrefour stratégique contre l'offensive ennemie",
+    difficulty: "MOYEN",
+    mapName: "falaise",
+    objective: "Tenir le carrefour pendant que les renforts arrivent. Bloquer toutes les routes d'accès.",
+    briefing: "Sous-officier ! L'ennemi attaque avec des blindés. Défendez le carrefour !",
+    timeLimit: 300,
+    terrain: "ARDENNES",
+    availableTroops: [
+      { id: "inf_1", name: "Escouade Parachutiste A", type: "INFANTRY", icon: "⚔", strength: 85, count: 3, description: "Parachutistes" },
+      { id: "tank_1", name: "Sherman M4", type: "TANK", icon: "🛡", strength: 120, count: 2, description: "Blindé" },
+      { id: "art_1", name: "Canon antichar", type: "ARTILLERY", icon: "💥", strength: 110, count: 1, description: "Antichar" },
+      { id: "snip_1", name: "Observateur", type: "SNIPER", icon: "🎯", strength: 80, count: 1, description: "Repère l'ennemi" },
+      { id: "medic_1", name: "Médecin", type: "MEDIC", icon: "✚", strength: 20, count: 2, description: "Soins" },
+    ],
+    criteria: [
+      { name: "Contrôle Carrefour", description: "Unité au carrefour central", maxPoints: 80, type: "POSITION", zoneId: "carrefour_centre" },
+      { name: "Ligne de Défense Nord", description: "Au moins 2 unités sur la route nord", maxPoints: 80, type: "CONSOLIDATION", zoneId: "route_nord", requiredCount: 2 },
+      { name: "Antichar", description: "Canon antichar face à l'Est", maxPoints: 70, type: "POSITION", zoneId: "route_est", requiredTroopType: "ARTILLERY" },
+      { name: "Appui Blindé", description: "Le Sherman doit soutenir l'infanterie", maxPoints: 70, type: "COHESION", requiredTroopType: "TANK", secondTroopType: "INFANTRY", minDistance: 0.2 },
+    ]
+  }),
+
+  createStalingradUrban: (): Mission => ({
+    id: "stalingrad_urbain",
+    title: "Stalingrad - Assaut Urbain",
+    description: "Prendre le contrôle du quartier industriel bâtiment par bâtiment",
+    difficulty: "ÉLITE",
+    mapName: "berlin",
+    objective: "Capturer l'usine centrale et les 2 immeubles clés.",
+    briefing: "Sous-officier ! Stalingrad est un enfer. Avancez méthodiquement.",
+    timeLimit: 400,
+    terrain: "STALINGRAD",
+    availableTroops: [
+      { id: "inf_1", name: "Escouade d'assaut A", type: "INFANTRY", icon: "⚔", strength: 90, count: 3, description: "Spécialistes" },
+      { id: "snip_1", name: "Sniper Vassili", type: "SNIPER", icon: "🎯", strength: 100, count: 1, description: "Sniper d'élite" },
+      { id: "eng_1", name: "Sapeurs", type: "ENGINEER", icon: "⚙", strength: 60, count: 2, description: "Explosifs" },
+      { id: "medic_1", name: "Infirmier", type: "MEDIC", icon: "✚", strength: 20, count: 1, description: "Soins rapides" },
+    ],
+    criteria: [
+      { name: "Assaut Usine", description: "Infanterie dans l'usine", maxPoints: 100, type: "POSITION", zoneId: "usine_centrale", requiredTroopType: "INFANTRY" },
+      { name: "Brèche Génie", description: "L'ingénieur doit ouvrir la voie à l'assaut", maxPoints: 80, type: "COHESION", requiredTroopType: "ENGINEER", secondTroopType: "INFANTRY", minDistance: 0.1 },
+      { name: "Position Dominante", description: "Sniper sur le toit nord", maxPoints: 80, type: "POSITION", zoneId: "toit_immeuble_nord", requiredTroopType: "SNIPER" },
+      { name: "Route de Repli", description: "Garder la rue arrière dégagée", maxPoints: 70, type: "AVOIDANCE", zoneId: "rue_arriere" },
+      { name: "Groupe d'Assaut Mixte", description: "Combiner infanterie, génie et médecin", maxPoints: 70, type: "DIVERSITY", zoneId: "entree_usine", requiredCount: 3 },
+    ]
+  }),
+
+  getZonesForMission: (missionId: string): MapZone[] => {
+    switch (missionId) {
+      case "normandie_beach":
+        return [
+          { id: "plage_centre", name: "Plage Centrale", description: "Zone exposée", x: 0.35, y: 0.72, width: 0.3, height: 0.15, strategicValue: "LOW", type: "OFFENSIF" },
+          { id: "sortie_gauche", name: "Sortie Gauche", description: "Objectif prioritaire", x: 0.1, y: 0.5, width: 0.18, height: 0.18, strategicValue: "HIGH", type: "OFFENSIF" },
+          { id: "sortie_centre", name: "Sortie Centre", description: "Objectif prioritaire", x: 0.41, y: 0.48, width: 0.18, height: 0.18, strategicValue: "HIGH", type: "OFFENSIF" },
+          { id: "colline_flanc", name: "Colline Flanc Droit", description: "Position élevée", x: 0.72, y: 0.25, width: 0.2, height: 0.25, strategicValue: "HIGH", type: "COLLINE" },
+          { id: "couverture_arriere", name: "Zone Couverture Arrière", description: "Zone protégée", x: 0.55, y: 0.78, width: 0.2, height: 0.14, strategicValue: "MEDIUM", type: "DEFENSIF" },
+          { id: "arriere_gauche", name: "Arrière Gauche", description: "Position mortier", x: 0.05, y: 0.75, width: 0.18, height: 0.16, strategicValue: "MEDIUM", type: "COUVERTURE" },
+          { id: "falaise_est", name: "Falaises Est", description: "Position ennemie", x: 0.75, y: 0.05, width: 0.22, height: 0.35, strategicValue: "HIGH", type: "DEFENSIF" },
+        ];
+      case "ardennes_foret":
+        return [
+          { id: "carrefour_centre", name: "Carrefour Central", description: "Objectif principal", x: 0.42, y: 0.42, width: 0.16, height: 0.16, strategicValue: "HIGH", type: "OFFENSIF" },
+          { id: "route_nord", name: "Route Nord", description: "Axe blindé ennemi", x: 0.35, y: 0.05, width: 0.3, height: 0.2, strategicValue: "HIGH", type: "PONT" },
+          { id: "route_est", name: "Route Est", description: "Axe blindé ennemi", x: 0.72, y: 0.35, width: 0.25, height: 0.2, strategicValue: "HIGH", type: "PONT" },
+          { id: "lisiere_foret", name: "Lisière Forêt", description: "Observation", x: 0.05, y: 0.3, width: 0.2, height: 0.35, strategicValue: "MEDIUM", type: "COUVERTURE" },
+          { id: "foret_dense", name: "Forêt Dense", description: "Embuscade", x: 0.05, y: 0.05, width: 0.28, height: 0.28, strategicValue: "MEDIUM", type: "COUVERTURE" },
+          { id: "arriere_centre", name: "Zone de Réserve", description: "Réserve", x: 0.38, y: 0.68, width: 0.24, height: 0.2, strategicValue: "LOW", type: "DEFENSIF" },
+          { id: "village_ouest", name: "Village Ouest", description: "Position secondaire", x: 0.05, y: 0.65, width: 0.22, height: 0.28, strategicValue: "MEDIUM", type: "VILLE" },
+        ];
+      case "stalingrad_urbain":
+        return [
+          { id: "usine_centrale", name: "Usine Centrale", description: "Objectif capturer", x: 0.38, y: 0.38, width: 0.24, height: 0.24, strategicValue: "HIGH", type: "VILLE" },
+          { id: "toit_immeuble_nord", name: "Toit Nord", description: "Sniper dominant", x: 0.35, y: 0.05, width: 0.3, height: 0.18, strategicValue: "HIGH", type: "COLLINE" },
+          { id: "toit_immeuble_sud", name: "Toit Sud", description: "Sniper dominant", x: 0.35, y: 0.77, width: 0.3, height: 0.18, strategicValue: "HIGH", type: "COLLINE" },
+          { id: "entree_usine", name: "Entrée Usine", description: "Point d'assaut", x: 0.28, y: 0.45, width: 0.12, height: 0.12, strategicValue: "HIGH", type: "OFFENSIF" },
+          { id: "flanc_est_ruines", name: "Ruines Est", description: "Couverture flanc", x: 0.72, y: 0.38, width: 0.22, height: 0.24, strategicValue: "MEDIUM", type: "COUVERTURE" },
+          { id: "rue_arriere", name: "Rue Arrière", description: "Zone de repli", x: 0.05, y: 0.42, width: 0.2, height: 0.2, strategicValue: "LOW", type: "DEFENSIF" },
+          { id: "immeuble_nord_ouest", name: "Immeuble NO", description: "Flanquement", x: 0.05, y: 0.05, width: 0.25, height: 0.3, strategicValue: "MEDIUM", type: "VILLE" },
+        ];
+      default:
+        return [];
+    }
+  }
+};
