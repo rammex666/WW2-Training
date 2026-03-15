@@ -1,12 +1,13 @@
 import React from 'react';
-import { Swords, Trophy, Settings } from 'lucide-react';
+import { Swords, Trophy, Lock } from 'lucide-react';
 
 interface MainMenuProps {
   onStart: () => void;
   onLeaderboard: () => void;
+  onAdmin: () => void;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ onStart, onLeaderboard }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ onStart, onLeaderboard, onAdmin }) => {
   return (
     <div className="main-menu">
       <div className="menu-content">
@@ -20,8 +21,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ onStart, onLeaderboard }) => {
           <button className="btn-outline" onClick={onLeaderboard}>
             <Trophy size={20} /> TABLEAU D'HONNEUR
           </button>
-          <button className="btn-outline">
-            <Settings size={20} /> OPTIONS
+          <button className="btn-outline admin-btn" onClick={onAdmin}>
+            <Lock size={16} /> ADMINISTRATION
           </button>
         </div>
       </div>
@@ -32,17 +33,16 @@ const MainMenu: React.FC<MainMenuProps> = ({ onStart, onLeaderboard }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('./maps/berlin.png');
-          background-size: cover;
-          background-position: center;
+          background-color: #1a2010; /* Fond vert militaire uni */
+          background-image: radial-gradient(circle, #2a3515 0%, #1a2010 100%);
         }
         .menu-content {
-          background: rgba(26, 30, 18, 0.9);
+          background: rgba(26, 30, 18, 0.95);
           padding: 3rem;
           border: 2px solid var(--gold);
           text-align: center;
           max-width: 500px;
-          box-shadow: 0 0 30px rgba(0,0,0,0.8);
+          box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
         .title-gold {
           font-size: 2.5rem;
@@ -64,6 +64,14 @@ const MainMenu: React.FC<MainMenuProps> = ({ onStart, onLeaderboard }) => {
           justify-content: center;
           gap: 0.5rem;
           font-size: 1.1rem;
+        }
+        .admin-btn {
+          margin-top: 1rem;
+          opacity: 0.6;
+          font-size: 0.9rem !important;
+        }
+        .admin-btn:hover {
+          opacity: 1;
         }
       `}</style>
     </div>

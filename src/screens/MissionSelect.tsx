@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mission } from '../models/types';
 import { ApiService } from '../services/ApiService';
-import { ChevronLeft, User, Shield } from 'lucide-react';
+import { ChevronLeft, User, Shield, Target } from 'lucide-react';
 
 interface MissionSelectProps {
   onSelect: (mission: Mission) => void;
@@ -25,7 +25,6 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
     });
   }, []);
 
-
   return (
     <div className="mission-select">
       <header className="header">
@@ -40,7 +39,12 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
           <h2 className="section-title"><User size={18} /> PROFIL DU JOUEUR</h2>
           <div className="input-group">
             <label>Nom du soldat</label>
-            <input type="text" value={playerName} onChange={e => setPlayerName(e.target.value)} />
+            <input 
+              type="text" 
+              value={playerName} 
+              onChange={e => setPlayerName(e.target.value)} 
+              placeholder="Ex: John Doe"
+            />
           </div>
           <div className="input-group">
             <label>Grade</label>
@@ -58,22 +62,27 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
 
         <main className="mission-grid">
           {loading ? (
-            <div className="loading-state">Chargement des missions...</div>
-          ) : missions.map(m => (
-            <div key={m.id} className="mission-card" onClick={() => onSelect(m)}>
-              <div className="card-image" style={{backgroundImage: `url('./maps/${m.mapName}.png')`}}>
-                <span className={`difficulty ${m.difficulty.toLowerCase()}`}>{m.difficulty}</span>
-              </div>
-              <div className="card-info">
-                <h3>{m.title}</h3>
-                <p>{m.description}</p>
-                <div className="card-footer">
-                  <span>{m.terrain}</span>
-                  <button className="btn-gold">CHOISIR</button>
+            <div className="loading-state">Initialisation des rapports de mission...</div>
+          ) : missions.length === 0 ? (
+            <div className="empty-state">Aucune mission disponible dans les archives.</div>
+          ) : (
+            missions.map(m => (
+              <div key={m.id} className="mission-card" onClick={() => onSelect(m)}>
+                <div className="card-image">
+                  <Target size={48} color="rgba(255,255,255,0.2)" />
+                  <span className={`difficulty ${m.difficulty.toLowerCase()}`}>{m.difficulty}</span>
+                </div>
+                <div className="card-info">
+                  <h3>{m.title}</h3>
+                  <p>{m.description}</p>
+                  <div className="card-footer">
+                    <span className="terrain-tag">{m.terrain}</span>
+                    <button className="btn-gold" onClick={(e) => { e.stopPropagation(); onSelect(m); }}>LANCER</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </main>
       </div>
 
@@ -118,7 +127,6 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          margin-bottom: 1rem;
         }
         .input-group {
           display: flex;
@@ -149,7 +157,7 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
         .mission-grid {
           padding: 2rem;
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
           gap: 2rem;
           overflow-y: auto;
         }
@@ -164,12 +172,13 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
         .mission-card:hover {
           border-color: var(--gold);
           transform: translateY(-5px);
-          box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
         .card-image {
-          height: 180px;
-          background-size: cover;
-          background-position: center;
+          height: 120px;
+          background-color: #1a2010;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           position: relative;
         }
         .difficulty {
@@ -177,7 +186,7 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
           top: 10px;
           right: 10px;
           padding: 4px 8px;
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           font-weight: bold;
           background: rgba(0,0,0,0.7);
         }
@@ -186,7 +195,7 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
         .difficulty.difficile { color: #F44336; }
         .difficulty.élite { color: #9C27B0; }
         .card-info {
-          padding: 1.5rem;
+          padding: 1.2rem;
           flex: 1;
           display: flex;
           flex-direction: column;
@@ -194,22 +203,32 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
         .card-info h3 {
           margin-bottom: 0.5rem;
           color: var(--gold-light);
+          font-size: 1.1rem;
         }
         .card-info p {
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           color: var(--text-secondary);
           flex: 1;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
         .card-footer {
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
-        .card-footer span {
-          font-size: 0.8rem;
+        .terrain-tag {
+          font-size: 0.7rem;
           font-weight: bold;
           text-transform: uppercase;
+          background: rgba(255,255,255,0.05);
+          padding: 2px 6px;
+        }
+        .loading-state, .empty-state {
+          grid-column: 1 / -1;
+          text-align: center;
+          padding: 4rem;
+          color: var(--text-secondary);
+          font-style: italic;
         }
       `}</style>
     </div>
