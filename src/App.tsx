@@ -102,6 +102,7 @@ const App: React.FC = () => {
       )}
       {currentScreen === 'MISSION_SELECT' && (
         <MissionSelect 
+          missions={allMissions}
           onSelect={startMission} 
           onBack={() => navigateTo('MAIN_MENU')} 
           playerName={playerName}

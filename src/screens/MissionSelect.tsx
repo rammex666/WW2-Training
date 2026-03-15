@@ -1,9 +1,9 @@
 import React from 'react';
 import { Mission } from '../models/types';
-import { ApiService } from '../services/ApiService';
 import { ChevronLeft, User, Shield, Target } from 'lucide-react';
 
 interface MissionSelectProps {
+  missions: Mission[];
   onSelect: (mission: Mission) => void;
   onBack: () => void;
   playerName: string;
@@ -13,18 +13,8 @@ interface MissionSelectProps {
 }
 
 const MissionSelect: React.FC<MissionSelectProps> = ({ 
-  onSelect, onBack, playerName, playerRank, setPlayerName, setPlayerRank 
+  missions, onSelect, onBack, playerName, playerRank, setPlayerName, setPlayerRank 
 }) => {
-  const [missions, setMissions] = React.useState<Mission[]>([]);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    ApiService.getMissions().then(data => {
-      setMissions(data);
-      setLoading(false);
-    });
-  }, []);
-
   return (
     <div className="mission-select">
       <header className="header">
@@ -61,10 +51,11 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
         </aside>
 
         <main className="mission-grid">
-          {loading ? (
-            <div className="loading-state">Initialisation des rapports de mission...</div>
-          ) : missions.length === 0 ? (
-            <div className="empty-state">Aucune mission disponible dans les archives.</div>
+          {missions.length === 0 ? (
+            <div className="empty-state">
+              <p>Aucune mission disponible dans les archives.</p>
+              <small>Si vous êtes admin, créez une mission dans l'espace administration.</small>
+            </div>
           ) : (
             missions.map(m => (
               <div key={m.id} className="mission-card" onClick={() => onSelect(m)}>
@@ -223,12 +214,11 @@ const MissionSelect: React.FC<MissionSelectProps> = ({
           background: rgba(255,255,255,0.05);
           padding: 2px 6px;
         }
-        .loading-state, .empty-state {
+        .empty-state {
           grid-column: 1 / -1;
           text-align: center;
           padding: 4rem;
           color: var(--text-secondary);
-          font-style: italic;
         }
       `}</style>
     </div>
