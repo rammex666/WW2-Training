@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Mission, TroopUnit, MapZone, EnemyUnit } from '../models/types';
+import { Mission, EnemyUnit } from '../models/types';
 import { MissionFactory } from '../services/MissionFactory';
 import { EnemyPlacementAI } from '../services/EnemyPlacementAI';
 import { ScoringEngine, EvaluationResult } from '../services/ScoringEngine';
@@ -21,7 +21,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ mission, onEvaluate, onBack
 
   useEffect(() => {
     setEnemies(EnemyPlacementAI.generateEnemies(mission, zones));
-  }, [mission.id]);
+  }, [mission.id, zones]);
 
   const handleMapClick = (e: React.MouseEvent) => {
     if (!selectedTroopId || !mapRef.current) return;
@@ -138,7 +138,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ mission, onEvaluate, onBack
                     top: `${pos.y * 100}%`,
                     backgroundColor: getTroopColor(troop.type)
                   }}
-                  onMouseDown={(e) => {
+                  onMouseDown={() => {
                     // Simple drag could be implemented here
                   }}
                   title={troop.name}

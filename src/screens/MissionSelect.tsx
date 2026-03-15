@@ -1,7 +1,7 @@
 import React from 'react';
-import { MissionFactory } from '../services/MissionFactory';
 import { Mission } from '../models/types';
 import { ApiService } from '../services/ApiService';
+import { ChevronLeft, User, Shield } from 'lucide-react';
 
 interface MissionSelectProps {
   onSelect: (mission: Mission) => void;

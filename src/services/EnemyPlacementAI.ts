@@ -1,7 +1,7 @@
-import { Mission, MapZone, EnemyUnit } from '../models/types';
+import { MapZone, EnemyUnit, Mission } from '../models/types';
 
 export const EnemyPlacementAI = {
-  generateEnemies: (mission: Mission, zones: MapZone[]): EnemyUnit[] => {
+  generateEnemies: (_mission: Mission, zones: MapZone[]): EnemyUnit[] => {
     const enemies: EnemyUnit[] = [];
     const enemyZones = zones.filter(z => z.type === 'DEFENSIF' || z.type === 'PONT' || z.strategicValue === 'HIGH');
     

@@ -1,4 +1,4 @@
-import { Mission, MapZone, TroopUnit, EvaluationCriteria } from '../models/types';
+import { Mission, MapZone } from '../models/types';
 
 export const MissionFactory = {
   createAllMissions: (): Mission[] => {
