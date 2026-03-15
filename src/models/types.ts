@@ -55,6 +55,7 @@ export interface Mission {
   terrain: string;
   availableTroops: TroopUnit[];
   criteria: EvaluationCriteria[];
+  zones?: MapZone[];
 }
 
 export interface SessionResult {

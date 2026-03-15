@@ -16,7 +16,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ mission, onEvaluate, onBack
   const [selectedTroopId, setSelectedTroopId] = useState<string | null>(null);
   const [showZones, setShowZones] = useState(true);
   const [enemies, setEnemies] = useState<EnemyUnit[]>([]);
-  const zones = MissionFactory.getZonesForMission(mission.id);
+  const zones = mission.zones || MissionFactory.getZonesForMission(mission.id);
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
