@@ -1,9 +1,0 @@
-Placez ici vos images de maps au format PNG ou JPG.
-
-Nommage requis :
-  normandie.png  (ou .jpg) -> Mission Omaha Beach
-  ardennes.png              -> Mission Ardennes
-  stalingrad.png            -> Mission Stalingrad
-
-L'image sera etiree pour remplir la carte tactique (870x680).
-Si aucune image n'est trouvee, une carte dessinee est utilisee.
