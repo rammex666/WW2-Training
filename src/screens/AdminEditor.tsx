@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mission, TroopUnit, MapZone, EvaluationCriteria } from '../models/types';
+import { Mission } from '../models/types';
 import { ChevronLeft, Plus, Save, Trash2, FileText, Users, Map as MapIcon, Target } from 'lucide-react';
 
 interface AdminEditorProps {
