@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Mission, MapZone } from '../models/types';
 import { ChevronLeft, Plus, Save, Trash2, FileText, Users, Map as MapIcon, Target, MousePointer2, Square } from 'lucide-react';
 
